@@ -1,0 +1,27 @@
+{
+  "name": "studious-rest",
+  "version": "1.0.0",
+  "description": "rest-api package implemented with json web token",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MekkyMayata/studious-rest.git"
+  },
+  "keywords": [
+    "node.js",
+    "express.js",
+    "mongodb"
+  ],
+  "author": "MekkyMayata",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MekkyMayata/studious-rest/issues"
+  },
+  "homepage": "https://github.com/MekkyMayata/studious-rest#readme",
+  "dependencies": {
+    "mocha": "^7.1.2"
+  }
+}
