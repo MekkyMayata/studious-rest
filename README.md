@@ -1,2 +1,2 @@
 # studious-rest
-rest-api implemented with json web tokens
+rest-api implemented with json web token
