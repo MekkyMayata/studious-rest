@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/MekkyMayata/studious-rest/issues"
   },
-  "homepage": "https://github.com/MekkyMayata/studious-rest#readme"
+  "homepage": "https://github.com/MekkyMayata/studious-rest#readme",
+  "dependencies": {
+    "mocha": "^7.1.2"
+  }
 }
