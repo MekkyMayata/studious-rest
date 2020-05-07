@@ -1,5 +1,5 @@
 const assert = require('assert');
-const index = require('../fix')
+const index = require("../fix");
 
 describe('tests codebase', () => {
 
@@ -7,6 +7,6 @@ describe('tests codebase', () => {
   //   assert(2 !== 'two');
   // })
   it('asserts', () => {
-    assert(index.tests(2) == 4);
+    assert(index.tests(2) === 4);
   })
 })
