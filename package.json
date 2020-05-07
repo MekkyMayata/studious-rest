@@ -4,7 +4,7 @@
   "description": "rest-api package implemented with json web token",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -28,5 +28,8 @@
     "jsonwebtoken": "^8.5.1",
     "mocha": "^7.1.2",
     "mongoose": "^5.9.11"
+  },
+  "devDependencies": {
+    "nyc": "^15.0.1"
   }
 }

@@ -1,8 +1,12 @@
 const assert = require('assert');
+const index = require('../fix')
 
 describe('tests codebase', () => {
 
+  // it('asserts', () => {
+  //   assert(2 !== 'two');
+  // })
   it('asserts', () => {
-    assert(2 !== 'two');
+    assert(index.tests(2) == 4);
   })
 })
