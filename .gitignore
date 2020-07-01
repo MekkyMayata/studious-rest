@@ -1,3 +1,11 @@
 node_modules
 .vscode
 npm-debug.log
+
+package-lock.json
+
+//nyc-files
+.nyc_output
+
+//dotenv 
+.env
