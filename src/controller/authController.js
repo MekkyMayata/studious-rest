@@ -4,12 +4,14 @@ import * as jwt from 'jsonwebtoken';
 import bodyParser, { raw } from 'body-parser';
 import secret from '../secrets';
 import userModel from '../model/userModel';
+import token_middleware from './token-middleware';
 
 let { pass } = secret;
 
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+// router.use(token_middleware());
 
 // signup endpoint
 router.post('/signup', (req, res) => {
@@ -35,26 +37,16 @@ router.post('/signup', (req, res) => {
   });
 });
 
-router.get('/user', (req,res) => {
+router.get('/user', token_middleware, (req,res, next) => {
   // get the supplied token
-  const token = req.headers['x-access-token'];
-  if(!token) {
-    return res.status(401).send({auth: false, message: 'No token supplied.'});
-  }
-  // authenticate 
-  jwt.verify(token, pass, (err, decoded) => {
+  userModel.findById(req.userTokenId, { password: 0 }, (err, user) => {
     if(err) {
-      return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
+      return res.status(500).send("Error finding user.");
     }
-    userModel.findById(decoded.id, { password: 0 }, (err, user) => {
-      if(err) {
-        return res.status(500).send("Error finding user.");
-      }
-      if(!user) {
-        return res.status(404).send("User does not exist.");
-      }
-      res.status(200).send(user);
-    });
+    if(!user) {
+      return res.status(404).send("User does not exist.");
+    }
+    res.status(200).send(user);
   });
 });
 
