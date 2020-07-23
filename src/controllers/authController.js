@@ -4,7 +4,8 @@ import * as jwt from 'jsonwebtoken';
 import bodyParser, { raw } from 'body-parser';
 import secret from '../secrets';
 import userModel from '../model/userModel';
-import token_middleware from './token-middleware';
+import token_middleware from '../custom-middleware/token-middleware';
+import { check, validationResult } from 'express-validator';
 
 let { pass } = secret;
 
@@ -14,7 +15,17 @@ router.use(bodyParser.json());
 // router.use(token_middleware());
 
 // signup endpoint
-router.post('/signup', (req, res) => {
+router.post('/signup', [
+  check('firstname').isLength({ min: 3 }).trim().escape(),
+  check('username').isLength({ min: 3 }).trim().escape(),
+  check('email').isEmail().normalizeEmail(),
+  check('password').isAlphanumeric()
+], (req, res) => {
+  // input valid and sanitized?
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    return res.status(400).send({ errors: errors.array() });
+  }
   // hash user password
   const saltRounds = 10;
   const salt = bcrypt.genSaltSync(saltRounds);
@@ -70,6 +81,35 @@ router.post('/login', (req,res) => {
     }
     const token = jwt.sign({ id: user._id }, pass, { expiresIn: 86400 });
     res.status(200).send({ auth: true, token: token });
+  });
+});
+
+// update
+router.put('/user/id/:id', [
+  check('username').isLength({ min: 3 }).trim().escape()
+], (req, res) => {
+  // validated and sanitized?
+  const errors = validationResult(req);
+  if(!errors.isEmpty()) {
+    return res.status(400).send({ errors: errors.array() });
+  }
+  // get old password and new password
+  const newUsername = req.body.username;
+  const id = req.params.id;
+  userModel.findOne({ _id: id }, { password: 0 }, (err, user) => {
+    if(err) {
+      return res.status(500).send('Server error.');
+    }
+    if(!user) {
+      return res.status(404).send('Invalid');
+    }
+    user.username = newUsername;
+    user.save()
+    .then(user => {
+      return res.status(200).send(user);
+    }).catch(error => {
+      return res.status(400).send(error);
+    });
   });
 });
 

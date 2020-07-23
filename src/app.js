@@ -1,5 +1,5 @@
 import express from "express";
-import authController from "../src/controller/authController";
+import authController from "../src/controllers/authController";
 
 const app = express();
 
